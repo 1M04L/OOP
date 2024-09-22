@@ -1,4 +1,4 @@
-#include<Fraction.h>
+#include"Fraction.h"
 
 Fraction Fraction::operator+(Fraction b) {
 	Fraction result;
@@ -56,7 +56,7 @@ bool Fraction::operator<<(Fraction b) {
 
 //uniqueMeth2(it finds whose din-r is bigger)
 bool Fraction::operator>>(Fraction b) {
-	return (m_denominator() < b.m_denominator());
+	return (m_denominato < b.m_denominator);
 }
 
 
