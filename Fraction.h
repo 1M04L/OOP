@@ -52,7 +52,7 @@ public:
 
 	Fraction InputFraction();
 
-	void privedenieKnesokrat;
+	void privedenieKnesokrat();
 
 
 private:
