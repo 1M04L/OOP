@@ -56,7 +56,7 @@ bool Fraction::operator<<(Fraction b) {
 
 //uniqueMeth2(it finds whose din-r is bigger)
 bool Fraction::operator>>(Fraction b) {
-	return (m_denominato < b.m_denominator);
+	return (m_denominator < b.m_denominator);
 }
 
 
@@ -75,24 +75,26 @@ Fraction Fraction::InputFraction()
 	return Fraction(num, den);
 }
 
-void Fraction::privedenieKnesokrat()
-{
-	int NOD = 1;
-	for (int i = 1; i <= std::min(m_numerator, m_denominator); ++i) {
-		if (m_numerator % i == 0 && m_denominator % i == 0) {
-			NOD = i;
-		}
-	}
-	m_numerator /= NOD;
-	m_denominator /= NOD;
+void Fraction::privedenieKnesokrat() {
+    while (true) {
+        int NOD = 1;
+        for (int i = 1; i <= std::min(abs(m_numerator), abs(m_denominator)); ++i) {
+            if (m_numerator % i == 0 && m_denominator % i == 0) {
+                NOD = i;
+            }
+        }
+
+        if (NOD == 1) {
+            break; 
+        }
+
+     
+        m_numerator /= NOD;
+        m_denominator /= NOD; 
+
+        if (m_numerator < 0 && m_denominator > 0) {
+            m_numerator *= -1;
+            m_denominator *= -1;
+        } 
+    }
 }
-
-
-
-
-
-
-
-
-
-
