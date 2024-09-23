@@ -46,12 +46,12 @@ public:
 	bool operator<<(Fraction b);//check whatfor lower
 	bool operator>>(Fraction b);
 
-	Fraction operator^(Fraction b);
+
 
 	void OutputFraction();
 
 	Fraction InputFraction();
-
+	
 	void privedenieKnesokrat();
 
 
