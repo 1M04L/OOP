@@ -6,7 +6,7 @@ int main() {
     fr1.privedenieKnesokrat();
     fr1.OutputFraction();
     
-    Fraction fr2(50,5);
+    Fraction fr2(-50,5);
     fr2.privedenieKnesokrat();
     fr2.OutputFraction();
     
