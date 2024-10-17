@@ -173,3 +173,4 @@ void Array<ItemType>::resize(int newSize) {
     m_array = newArray;
     m_size = newSize;
 }
+template class Array<int>;
