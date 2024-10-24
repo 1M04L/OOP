@@ -23,9 +23,10 @@ int main() {
     int index = arr.find(8);
     std::cout << "Индекс элемента со значением 8: " << index << std::endl;
 
-    arr.sort();
-    std::cout << "После сортировки: ";
+    arr.bubbleSort();arr.print();
+    std::cout<<"sorted array:";
     arr.print();
+    
 
     Array<int> copiedArray = arr;
     std::cout << "Скопированный массив: ";
@@ -34,6 +35,10 @@ int main() {
     arr.swap(copiedArray);
     std::cout << "Массив после обмена с копией: ";
     arr.print();
+    
+    
+    
+    
     
     std::cout << "Копия после обмена: ";
     copiedArray.print();
