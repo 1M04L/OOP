@@ -34,7 +34,7 @@ public:
     int find(const ItemType& value) const;
 
     void print() const;
-    void sort();
+    void bubbleSort();
 
     Array& operator=(const Array& other);
     Array& operator=(Array&& other) noexcept;
