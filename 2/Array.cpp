@@ -105,10 +105,7 @@ void Array<ItemType>::swap(Array& other) noexcept {
     std::swap(m_size, other.m_size);
 }
 
-template <typename ItemType>
-void Array<ItemType>::sort() {
-    std::sort(m_array, m_array + m_size);
-}
+
 
 template <typename ItemType>
 void Array<ItemType>::print() const {
@@ -174,3 +171,16 @@ void Array<ItemType>::resize(int newSize) {
     m_size = newSize;
 }
 template class Array<int>;
+
+
+template <typename ItemType>
+void Array<ItemType>::bubbleSort() {
+    for (int i = 0; i < m_size - 1; ++i) {
+        for (int j = 0; j < m_size - i - 1; ++j) {
+            if (m_array[j] > m_array[j + 1]) {
+                   std::swap(m_array[j], m_array[j + 1]);
+               }
+           }
+       }
+   }
+
