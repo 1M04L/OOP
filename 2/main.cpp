@@ -2,7 +2,7 @@
 #include "Array.h"
 
 int main() {
-    int initialValues[] = {5, 3, 8, 1, 2};
+    int initialValues[] = {5, 3, 8, -1,-1,-1, 2,2};
     Array<int> arr(initialValues, 5);
 
     std::cout << "Исходный массив: ";
@@ -23,10 +23,9 @@ int main() {
     int index = arr.find(8);
     std::cout << "Индекс элемента со значением 8: " << index << std::endl;
 
-    arr.bubbleSort();arr.print();
-    std::cout<<"sorted array:";
+    arr.bubbleSort();
+    std::cout << "Отсортированный массив: ";
     arr.print();
-    
 
     Array<int> copiedArray = arr;
     std::cout << "Скопированный массив: ";
@@ -35,13 +34,12 @@ int main() {
     arr.swap(copiedArray);
     std::cout << "Массив после обмена с копией: ";
     arr.print();
-    
-    
-    
-    
-    
+
     std::cout << "Копия после обмена: ";
     copiedArray.print();
+
+    int modeValue = arr.mode();
+    std::cout <<  "  мода:  " << modeValue << std::endl;
 
     return 0;
 }
