@@ -1,72 +1,62 @@
-//boolMatrix.h
+// boolMatrix.h
 
 #include <iostream>
 #include <vector>
+#include "BoolVector.h"
 
 class BoolMatrix {
 private:
-  std::vector<std::vector<bool>> matrix;
-  size_t rows;
-  size_t cols;
+    std::vector<BoolVector> matrix;
+    size_t rows;
+    size_t cols;
 
 public:
-  
-  BoolMatrix();
-  BoolMatrix(size_t rows, size_t cols, bool value = false);
-  BoolMatrix(const std::vector<std::string>& charMatrix);
-  BoolMatrix(const BoolMatrix& other);
-
+    BoolMatrix();
+    BoolMatrix(size_t rows, size_t cols, bool value = false);
+    BoolMatrix(const std::vector<std::string>& charMatrix);
+    BoolMatrix(const BoolMatrix& other);
     ~BoolMatrix();
 
-  size_t getRows() const;
-  size_t getCols() const;
+    size_t getRows() const;
+    size_t getCols() const;
 
-  void swap(BoolMatrix& other);
+    void swap(BoolMatrix& other);
 
-  
-  friend std::ostream& operator<<(std::ostream& os, const BoolMatrix& matrix);
-  friend std::istream& operator>>(std::istream& is, BoolMatrix& matrix);
+    friend std::ostream& operator<<(std::ostream& os, const BoolMatrix& matrix);
+    friend std::istream& operator>>(std::istream& is, BoolMatrix& matrix);
 
-  
-  size_t getWeight() const;
+    size_t getWeight() const;
 
-  
-  std::vector<bool> conjunction() const;
+    std::vector<bool> conjunction() const;
 
+    BoolMatrix& operator=(const BoolMatrix& other);
+    BoolVector& operator[](size_t row);
+    const BoolVector& operator[](size_t row) const;
 
-  BoolMatrix& operator=(const BoolMatrix& other);
-  std::vector<bool>& operator[](size_t row);
-  const std::vector<bool>& operator[](size_t row) const;
-  BoolMatrix operator&(const BoolMatrix& other) const;
-  BoolMatrix& operator&=(const BoolMatrix& other);
-  BoolMatrix operator|(const BoolMatrix& other) const;
-  BoolMatrix& operator|=(const BoolMatrix& other);
+    BoolMatrix operator&(const BoolMatrix& other) const;
+    BoolMatrix& operator&=(const BoolMatrix& other);
+    BoolMatrix operator|(const BoolMatrix& other) const;
+    BoolMatrix& operator|=(const BoolMatrix& other);
 };
 
-
-
-
-
-
-//boolMatrix.cpp
-
-#include "boolMatrix.h"
+// boolMatrix.cpp
+#include "BoolMatrix.h"
 #include <algorithm>
 
 BoolMatrix::BoolMatrix() : rows(0), cols(0) {}
 
 BoolMatrix::BoolMatrix(size_t rows, size_t cols, bool value) : rows(rows), cols(cols) {
-    matrix.resize(rows, std::vector<bool>(cols, value));
+    matrix.resize(rows, BoolVector(cols, value));
 }
 
 BoolMatrix::BoolMatrix(const std::vector<std::string>& charMatrix) {
     rows = charMatrix.size();
     if (rows > 0) {
         cols = charMatrix[0].length();
-        matrix.resize(rows, std::vector<bool>(cols));
+        matrix.resize(rows, BoolVector(cols));
         for (size_t i = 0; i < rows; ++i) {
             for (size_t j = 0; j < cols; ++j) {
-                matrix[i][j] = (charMatrix[i][j] == '1');
+                matrix[i].setBitValue(j, (charMatrix[i][j] == '1'));
             }
         }
     }
@@ -87,21 +77,14 @@ void BoolMatrix::swap(BoolMatrix& other) {
 
 std::ostream& operator<<(std::ostream& os, const BoolMatrix& matrix) {
     for (size_t i = 0; i < matrix.rows; ++i) {
-        for (size_t j = 0; j < matrix.cols; ++j) {
-            os << matrix.matrix[i][j];
-        }
-        os << std::endl;
+        os << matrix.matrix[i];
     }
     return os;
 }
 
 std::istream& operator>>(std::istream& is, BoolMatrix& matrix) {
     for (size_t i = 0; i < matrix.rows; ++i) {
-        for (size_t j = 0; j < matrix.cols; ++j) {
-            char c;
-            is >> c;
-            matrix.matrix[i][j] = (c == '1');
-        }
+        is >> matrix.matrix[i];
     }
     return is;
 }
@@ -109,27 +92,21 @@ std::istream& operator>>(std::istream& is, BoolMatrix& matrix) {
 size_t BoolMatrix::getWeight() const {
     size_t weight = 0;
     for (size_t i = 0; i < rows; ++i) {
-        for (size_t j = 0; j < cols; ++j) {
-            if (matrix[i][j]) {
-                weight++;
-            }
-        }
+        weight += matrix[i].length(); 
     }
     return weight;
 }
-
 
 std::vector<bool> BoolMatrix::conjunction() const {
     if (rows == 0) return {};
     std::vector<bool> result(cols, true);
     for (size_t i = 0; i < rows; ++i) {
         for (size_t j = 0; j < cols; ++j) {
-            result[j] &= matrix[i][j];
+            result[j] &= matrix[i].bitValue(j);  
         }
     }
     return result;
 }
-
 
 BoolMatrix& BoolMatrix::operator=(const BoolMatrix& other) {
     if (this != &other) {
@@ -140,11 +117,11 @@ BoolMatrix& BoolMatrix::operator=(const BoolMatrix& other) {
     return *this;
 }
 
-std::vector<bool>& BoolMatrix::operator[](size_t row) {
+BoolVector& BoolMatrix::operator[](size_t row) {
     return matrix[row];
 }
 
-const std::vector<bool>& BoolMatrix::operator[](size_t row) const {
+const BoolVector& BoolMatrix::operator[](size_t row) const {
     return matrix[row];
 }
 
@@ -154,9 +131,7 @@ BoolMatrix BoolMatrix::operator&(const BoolMatrix& other) const {
     }
     BoolMatrix result(rows, cols);
     for (size_t i = 0; i < rows; ++i) {
-        for (size_t j = 0; j < cols; ++j) {
-            result[i][j] = matrix[i][j] && other[i][j];
-        }
+        result[i] = matrix[i] & other[i]; 
     }
     return result;
 }
@@ -172,9 +147,7 @@ BoolMatrix BoolMatrix::operator|(const BoolMatrix& other) const {
     }
     BoolMatrix result(rows, cols);
     for (size_t i = 0; i < rows; ++i) {
-        for (size_t j = 0; j < cols; ++j) {
-            result[i][j] = matrix[i][j] || other[i][j];
-        }
+        result[i] = matrix[i] | other[i];  
     }
     return result;
 }
@@ -188,48 +161,3 @@ BoolMatrix& BoolMatrix::operator|=(const BoolMatrix& other) {
 
 
 
-
-
-//main.cpp
-
-#include <iostream>
-#include <vector>
-#include "boolMatrix.h"
-
-int main() {
- 
-    BoolMatrix m1(3, 4, true);
-    BoolMatrix m2(3, 4);
-    std::vector<std::string> charMatrix = {"1010", "0101", "1100"};
-    BoolMatrix m3(charMatrix);
-    BoolMatrix m4 = m1;
-
-
-    std::cout << "M1:\n" << m1 << std::endl;
-    std::cout << "M2:\n" << m2 << std::endl;
-    std::cout << "M3:\n" << m3 << std::endl;
-    std::cout << "M4:\n" << m4 << std::endl;
-
-    std::cout << "Rows M1: " << m1.getRows() << ", Cols M1: " << m1.getCols() << std::endl;
-    std::cout << "Weight M1: " << m1.getWeight() << std::endl;
-    std::cout << "Conjunction M1: ";
-    for (bool b : m1.conjunction()) std::cout << b;
-    std::cout << std::endl;
-
-
-    m1.swap(m2);
-    std::cout << "After swap:\n";
-    std::cout << "M1:\n" << m1 << std::endl;
-    std::cout << "M2:\n" << m2 << std::endl;
-
-    BoolMatrix m5 = m1 & m3;
-    std::cout << "M1 & M3:\n" << m5 << std::endl;
-
-    m1 &= m3;
-    std::cout << "M1 &= M3:\n" << m1 << std::endl;
-
-    m2 |= m3;
-    std::cout << "M2 |= M3:\n" << m2 << std::endl;
-
-    return 0;
-}
