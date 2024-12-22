@@ -1,10 +1,8 @@
-//list.h:
 #pragma once
 
 #include <iostream>
 #include <stdexcept>
-#include <algorithm> 
-
+#include <algorithm>
 
 template <typename T>
 class List {
@@ -40,15 +38,13 @@ public:
     bool operator==(const List<T>& other) const;
     bool operator!=(const List<T>& other) const;
     void clear();
-    
+
+    void inputFromConsole(int n); 
 };
 
 
-
-
-//list.cpp:
 #include "list.h"
-#include<iostream>
+#include <iostream>
 
 template <typename T>
 void List<T>::clear() {
@@ -72,7 +68,6 @@ List<T>::List(const T arr[], int size) : head(nullptr), tail(nullptr), size(0) {
         append(arr[i]);
     }
 }
-
 
 template <typename T>
 List<T>::List(const List<T>& other) : head(nullptr), tail(nullptr), size(0) {
@@ -101,7 +96,6 @@ List<T>& List<T>::operator=(const List<T>& other) {
     }
     return *this;
 }
-
 
 template <typename T>
 int List<T>::getSize() const {
@@ -136,7 +130,6 @@ typename List<T>::Node* List<T>::find(const T& value) const {
     }
     return nullptr;
 }
-
 
 template <typename T>
 void List<T>::append(const T& value) {
@@ -192,7 +185,6 @@ void List<T>::removeLast() {
     size--;
 }
 
-
 template <typename T>
 T& List<T>::operator[](int index) {
     if (index < 0 || index >= size) {
@@ -204,7 +196,6 @@ T& List<T>::operator[](int index) {
     }
     return current->data;
 }
-
 
 template <typename T>
 bool List<T>::operator==(const List<T>& other) const {
@@ -222,6 +213,15 @@ bool List<T>::operator==(const List<T>& other) const {
 template <typename T>
 bool List<T>::operator!=(const List<T>& other) const {
     return !(*this == other);
+}
+
+template <typename T>
+void List<T>::inputFromConsole(int n) {
+    for (int i = 0; i < n; ++i) {
+        T value;
+        std::cin >> value;  
+        append(value);      
+    }
 }
 
 
