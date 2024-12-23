@@ -43,7 +43,7 @@ public:
 };
 
 
-#include "list.h"
+
 #include <iostream>
 
 template <typename T>
